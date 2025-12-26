@@ -17,21 +17,19 @@ export class AuthService {
 
   }
 
-  async validateUser(payload: { email: string, pass: string }): Promise<any> {
+  async validateUser(payload: { user_name: string, pass: string }): Promise<any> {
 
-    const user: any  = await this.userServices.findOneByEmail(payload.email);
+    const user = await this.userServices.findByUserName(payload.user_name);
     if (user && (await bcrypt.compare(payload.pass, user.password))) {
 
+      //Separamos responsabilidad es decir la contraseña aparte para que cuando se cree el jwt no este la contraseña
       const { password, ...result } = user;
 
       return result;
     }
 
 
-
-
-
-
+    //poner validaciones 
   }
 
 
