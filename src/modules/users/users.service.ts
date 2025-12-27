@@ -10,9 +10,6 @@ export class UsersService {
 
 
   constructor(private prisma: PrismaService) { }
-
-
-
   async create(createUserDto: CreateUserDto) {
 
     const temporaryPassword = randomBytes(4).toString('hex');
@@ -66,16 +63,11 @@ export class UsersService {
 
 
   async findByUserName(username: string): Promise<any | null> {
-
-
-
     return this.prisma.users.findFirst({
       where: { user_name: username },
       include: {
         persons: true,
         users_profiles: true
-
-
       }
     });
 
