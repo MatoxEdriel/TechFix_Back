@@ -11,12 +11,27 @@ const common_1 = require("@nestjs/common");
 const menu_config_1 = require("./config/menu.config");
 let MenuService = class MenuService {
     getMenuForRole(userRole) {
-        return menu_config_1.MASTER_MENU.filter(item => {
-            if (!item.roles || item.roles.length === 0) {
-                return true;
-            }
-            return item.roles?.includes(userRole);
+        const filteredMenu = menu_config_1.MASTER_MENU.map(section => {
+            const filteredItems = section.items.filter(item => {
+                return this.hasPermission(item, userRole);
+            });
+            return { ...section, items: filteredItems };
         });
+        return filteredMenu.filter(section => section.items.length > 0);
+    }
+    hasPermission(item, userRoles) {
+        if (!item.roles || item.roles.length === 0) {
+            return true;
+        }
+        const normalize = (text) => {
+            return text
+                .toUpperCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+        };
+        const userRolesClean = userRoles.map(r => normalize(r));
+        const itemRolesClean = item.roles.map(r => normalize(r));
+        return itemRolesClean.some(role => userRolesClean.includes(role));
     }
 };
 exports.MenuService = MenuService;

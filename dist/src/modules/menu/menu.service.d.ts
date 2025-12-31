@@ -1,4 +1,5 @@
-import { MenuItem } from 'src/interfaces/menu.interface';
+import { MenuSection } from 'src/interfaces/menu.interface';
 export declare class MenuService {
-    getMenuForRole(userRole: string): MenuItem[];
+    getMenuForRole(userRole: string[]): MenuSection[];
+    private hasPermission;
 }

@@ -22,6 +22,7 @@ let MenuController = class MenuController {
         this.menuService = menuService;
     }
     getMenu(req) {
+        console.log('User del Token:', req.user);
         const userRole = req.user.role;
         return this.menuService.getMenuForRole(userRole);
     }

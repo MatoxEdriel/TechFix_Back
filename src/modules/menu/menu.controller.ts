@@ -10,6 +10,7 @@ export class MenuController {
     @UseGuards(AuthGuard('jwt'))
     @Get()
     getMenu(@Request() req) {
+        console.log('User del Token:', req.user);
         const userRole = req.user.role;
 
         return this.menuService.getMenuForRole(userRole);
