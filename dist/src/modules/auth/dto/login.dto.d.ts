@@ -7,4 +7,5 @@ export interface UserValidated {
     user_name: string;
     person_id?: number | null;
     first_login?: boolean;
+    role: number;
 }
