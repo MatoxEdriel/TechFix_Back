@@ -6,14 +6,14 @@ export declare class UsersController {
     register(createUserDto: CreateUserDto): Promise<{
         temporaryPassword: string;
         persons: {
-            id: number;
             name: string | null;
-            type_id: number | null;
             last_name: string | null;
             email: string | null;
+            type_id: number | null;
             birthday_day: Date | null;
             phone: string | null;
             address: string | null;
+            id: number;
         } | null;
         user_name: string | null;
         id: number;

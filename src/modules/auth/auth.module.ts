@@ -6,12 +6,15 @@ import { LocalStrategy } from './strategies/LocalStrategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/JwtStrategy';
+import { MailModule } from '../business/mail/mail.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService, JwtModule],
   imports: [UsersModule,
+    MailModule
+    ,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

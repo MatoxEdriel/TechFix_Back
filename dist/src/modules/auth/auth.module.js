@@ -15,6 +15,7 @@ const LocalStrategy_1 = require("./strategies/LocalStrategy");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const JwtStrategy_1 = require("./strategies/JwtStrategy");
+const mail_module_1 = require("../business/mail/mail.module");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -24,6 +25,7 @@ exports.AuthModule = AuthModule = __decorate([
         providers: [auth_service_1.AuthService, LocalStrategy_1.LocalStrategy, JwtStrategy_1.JwtStrategy],
         exports: [auth_service_1.AuthService, jwt_1.JwtModule],
         imports: [users_module_1.UsersModule,
+            mail_module_1.MailModule,
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],

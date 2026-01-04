@@ -7,10 +7,10 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { PrismaModule } from 'prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { MailModule } from './modules/business/mail/mail.module';
 
 @Module({
   imports: [
-
 
 
     PrismaModule,

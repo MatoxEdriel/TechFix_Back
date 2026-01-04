@@ -17,9 +17,12 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const passport_1 = require("@nestjs/passport");
 const login_dto_1 = require("./dto/login.dto");
+const mail_service_1 = require("../business/mail/mail.service");
 let AuthController = class AuthController {
+    mailService;
     authService;
-    constructor(authService) {
+    constructor(mailService, authService) {
+        this.mailService = mailService;
         this.authService = authService;
     }
     async login(loginDto, req) {
@@ -28,6 +31,19 @@ let AuthController = class AuthController {
     async changePassword(req, changePassDto) {
         const userId = req.user.userId;
         return this.authService.changePassword(userId, changePassDto.pass);
+    }
+    async sendCode(email) {
+        if (!email)
+            throw new common_1.BadRequestException('Email requerido');
+        const code = Math.floor(1000 + Math.random() * 9000).toString();
+        const sent = await this.mailService.sendOtp(email, code);
+        if (!sent) {
+            throw new common_1.BadRequestException('No se pudo enviar el correo.');
+        }
+        return {
+            message: 'Código enviado correctamente',
+            email: email
+        };
     }
 };
 exports.AuthController = AuthController;
@@ -49,8 +65,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, login_dto_1.ChangePasswordDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "changePassword", null);
+__decorate([
+    (0, common_1.Post)('send-code'),
+    __param(0, (0, common_1.Body)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "sendCode", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    __metadata("design:paramtypes", [mail_service_1.MailService,
+        auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

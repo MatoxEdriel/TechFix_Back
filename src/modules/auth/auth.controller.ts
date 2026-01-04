@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ChangePasswordDto, LoginAuthDto } from './dto/login.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
+import { MailService } from '../business/mail/mail.service';
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService,
+  constructor(
+    private readonly mailService: MailService,
+    private readonly authService: AuthService,
   ) { }
 
 
@@ -30,10 +33,17 @@ export class AuthController {
 
 
 
-
-
-
-
-
-
+  @Post('send-code')
+  async sendCode(@Body('email') email: string) {
+    if (!email) throw new BadRequestException('Email requerido');
+    const code = Math.floor(1000 + Math.random() * 9000).toString();
+    const sent = await this.mailService.sendOtp(email, code);
+    if (!sent) {
+      throw new BadRequestException('No se pudo enviar el correo.');
+    }
+ return {
+      message: 'Código enviado correctamente',
+      email: email
+    };
+  }
 }
