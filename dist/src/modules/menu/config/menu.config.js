@@ -11,7 +11,18 @@ exports.MASTER_MENU = [
                 path: '/dashboard/home',
                 roles: ['ADMIN', 'Tecnico', 'Vendedor']
             }
-        ]
+        ],
+    },
+    {
+        title: 'Servicios',
+        items: [
+            {
+                label: 'Registrar Reparación',
+                icon: 'fa-solid fa-circle-plus',
+                path: '/dashboard/services',
+                roles: ['ADMIN', 'Tecnico', 'Vendedor']
+            }
+        ],
     },
     {
         title: 'ADMINISTRACIÓN',
